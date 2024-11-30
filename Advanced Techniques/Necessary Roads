@@ -1,0 +1,44 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int N=1e5+5;
+int dis[N],low[N],cnt=1;
+vector<int> g[N];
+bool vis[N];
+vector<pair<int,int>> ans;
+ 
+//https://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=GRL_3_B
+ 
+inline void rec(int x,int p){
+  dis[x]=low[x]=cnt++;
+  for(auto e:g[x]){
+    if(e==p) continue;
+    if(dis[e]==0){
+      rec(e,x);
+      low[x]=min(low[x],low[e]);
+      if(low[e]>dis[x]){
+        ans.push_back({x,e});
+      }
+    }
+    else{
+    	low[x]=min(dis[e],low[x]);
+	}
+  }
+}
+ 
+int main(){
+  ios::sync_with_stdio(0); cin.tie(0);
+  int n,m;
+  cin >> n >> m;
+  for(int i=1;i<=m;i++){
+    int u,v;
+    cin >> u >> v;
+    g[u].push_back(v);
+    g[v].push_back(u);
+  }
+  rec(1,-1);
+  cout << ans.size() << "\n";
+  for(auto e:ans){
+    cout << e.first << ' ' << e.second << "\n";
+  }
+}
+ 

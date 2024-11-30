@@ -1,0 +1,59 @@
+#include<bits/stdc++.h>
+using namespace std;
+using pii=pair<int,int>;
+using ppi=pair<int,pii>;
+const int N=2e6+5;
+vector<ppi> p;
+int a[N],f[N];
+ 
+inline int fw(int i){
+  int ans=0;
+  for(;i;i-=i&-i){
+    ans+=f[i];
+  }
+  return ans;
+}
+ 
+inline void up(int i,int x){
+  for(;i<N;i+=i&-i){
+    f[i]+=x;
+  }
+}
+ 
+int main(){
+  ios::sync_with_stdio(0); cin.tie(0);
+  int n;
+  cin >> n;
+  for(int i=1;i<=n;i++){
+    int x1,y1,x2,y2;
+    cin >> x1 >> y1 >> x2 >> y2;
+    x1+=1e6;
+    y1+=1e6;
+    x2+=1e6;
+    y2+=1e6;
+    if(x1==x2){
+      p.push_back({x1,{y1,y2}});
+    }
+    else{ 
+      p.push_back({x1,{y1,-1}});
+      p.push_back({x2,{y2,-2}});
+    }
+  }
+  long long int ans=0;
+  sort(p.begin(),p.end());
+  for(auto e:p){
+    int x=e.first;
+    int y=e.second.first;
+    int chk=e.second.second;
+    if(chk==-1){
+      up(y,1);
+    }
+    else if(chk==-2){
+      up(y,-1);
+    }
+    else{
+      ans+=fw(chk)-fw(y-1);
+    }
+  }
+  cout << ans;
+}

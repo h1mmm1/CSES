@@ -1,0 +1,42 @@
+#include<bits/stdc++.h>
+using namespace std;
+using pii=pair<int,int>;
+const int N=2e5+5;
+vector<int> g[N];
+queue<int> q;
+int dis[N],mx=0;
+bool vis[N];
+ 
+int main(){
+  ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+  int n;
+  cin >> n;
+  for(int i=1;i<n;i++){
+    int a,b;
+    cin >> a >> b;
+    g[a].push_back(b);
+    g[b].push_back(a);
+  }
+  int x=1;
+  for(int i=1;i<=2;i++){
+    q.push(x);
+    dis[x]=0;
+    vis[x]=true;
+    while(!q.empty()){
+      x=q.front();
+      q.pop();
+//      cout << x << "\n";
+      for(auto e:g[x]){
+        int xx=e;
+        if(vis[xx]==false){
+          dis[xx]=dis[x]+1;
+          mx=max(mx,dis[xx]);
+          vis[xx]=true;
+          q.push(xx);
+        }
+      }
+    }  
+    memset(vis,false,sizeof vis);
+  }
+  cout << mx;
+}

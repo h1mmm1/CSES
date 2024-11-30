@@ -1,0 +1,50 @@
+#include<bits/stdc++.h>
+using namespace std;
+using ll=long long int;
+ll d[1000005];
+ll ix[1000005];
+int a[30];
+ll xx(ll n,ll m, ll x){
+	ll ans=1;
+	while(m>0){
+		if(m%2==1){
+			ans*=n;
+			ans%=x;
+		}
+		n*=n;
+		n%=x;
+		m/=2;
+	}
+	return ans;
+}
+ 
+int main(){
+	ios::sync_with_stdio(0); cin.tie(0);
+	ll mod=1e9+7,ans=1;
+	d[0]=1;
+	ix[0]=1;
+	for(int i=1;i<=1000000;i++){	
+		d[i]=(i*d[i-1])%mod;
+		ix[i]=xx(d[i],mod-2,mod);
+	}
+	string s;
+	cin >> s;
+	for(int i=0;i<s.size();i++){
+		int n=s[i]-'a';
+		a[n]++;
+	}
+	ans*=d[s.size()];
+	ans%=mod;
+//	cout << "ans: " << ans << endl;
+	for(int i=0;i<26;i++){
+		//a[i]--;
+		if(a[i]>0){
+			ans*=ix[a[i]];
+			ans%=mod;
+		}
+	}
+	cout << ans;
+//	for(int i=0;i<26;i++){
+//		cout << a[i] << ' ';
+//	}
+}

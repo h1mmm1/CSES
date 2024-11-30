@@ -1,0 +1,25 @@
+#include<bits/stdc++.h>
+using namespace std;
+ 
+ 
+ 
+int main(){
+	ios::sync_with_stdio(0); cin.tie(0);
+	int c,x=1e9+7;
+    cin >> c;
+    for(int i=1;i<=c;i++){
+        long long int n,m,ans=1;
+        cin >> n >> m;
+        n%=x;
+        while(m>0){
+            if(m%2==1){
+                ans*=n;
+                ans%=x;
+            }
+            n*=n;
+            n%=x;
+            m/=2;
+        }
+        cout << ans << "\n";
+    }
+}

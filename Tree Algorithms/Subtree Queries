@@ -1,0 +1,80 @@
+#include<bits/stdc++.h>
+using namespace std;
+using ll=long long int;
+using ppi=pair<int,int>;
+const int N=2e5+5;
+vector<int> g[N];
+ll L[N*2],R[N*2],st[N*2*4],a[N],cnt=1,n,m;
+ 
+inline void bu(int i,int l,int r){
+  if(l==r){
+    st[i]=a[l];
+  }
+  else{
+    int mid=(l+r)/2;
+    bu(i*2,l,mid);
+    bu(i*2+1,mid+1,r);  
+    st[i]=st[i*2]+st[i*2+1];
+  }
+}
+ 
+inline ll qur(int i,int l,int r,int ql,int qr){
+  if(ql>r || qr<l) return 0;
+  if(ql<=l && qr>=r) return st[i];
+  int mid=(l+r)/2;
+  return qur(i*2,l,mid,ql,qr)+qur(i*2+1,mid+1,r,ql,qr);
+}
+ 
+inline void up(int i,int l,int r,int pos,int x){
+  if(l>r || r<pos || l>pos) return;
+  if(l==pos && r==pos){
+    st[i]=x;
+    return;
+  }
+  int mid=(l+r)/2;
+  up(i*2,l,mid,pos,x);
+  up(i*2+1,mid+1,r,pos,x);
+  st[i]=st[i*2]+st[i*2+1];
+}
+ 
+inline void rec(int x,int p){
+  L[x]=cnt++;
+ 
+  for(auto e:g[x]){
+    if(e==p) continue;
+    rec(e,x);
+  }
+  R[x]=cnt++;
+  up(1,1,n*2,L[x],a[x]);
+}
+ 
+int main(){
+  ios::sync_with_stdio(0); cin.tie(0);
+  cin >> n >> m;
+  for(int i=1;i<=n;i++){
+    cin >> a[i];
+  }
+  for(int i=1;i<=n-1;i++){
+    int u,v;
+    cin >> u >> v;
+    g[u].push_back(v);
+    g[v].push_back(u);
+  }
+  rec(1,-1);
+//  for(int i=1;i<=2*n;i++) cout << qur(1,1,n*2,i,i) << " ";
+//    cout<<"\n";
+  for(int i=1;i<=m;i++){
+    int t;
+    cin >> t;
+    if(t==2){
+      int u;
+      cin >> u;
+      cout << qur(1,1,n*2,L[u],R[u]) << "\n";
+    }
+    else{
+      int u,x;
+      cin >> u >> x;
+      up(1,1,n*2,L[u],x);
+    }
+  }
+}

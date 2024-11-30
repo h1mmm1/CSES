@@ -1,0 +1,90 @@
+#include<bits/stdc++.h>
+using namespace std;
+using ll=long long int;
+const int N=2e5+5,P=53,MOD=1e9+7;
+long long int h[N],h1[N],p[N],f1[N*4],f2[N*4];
+ 
+ll fw1(int v,int l,int r,ll ql,ll qr){
+  if(qr<l || r<ql) return 0;
+  if(ql<=l && r<=qr) return f1[v];
+  int mid=(l+r)/2;
+  return (fw1(v*2,l,mid,ql,qr)+fw1(v*2+1,mid+1,r,ql,qr))%MOD;
+}
+ 
+void up1(int v,int l,int r,int pos,ll val){
+  if(l==r) f1[v]+=val,f1[v]%=MOD;
+  else{
+    int mid=(l+r)/2;
+    if(pos<=mid){
+      up1(v*2,l,mid,pos,val);
+    }
+    else up1(v*2+1,mid+1,r,pos,val);
+    f1[v]=(f1[v*2]+f1[v*2+1])%MOD;
+  }
+}
+ 
+ll fw2(int v,int l,int r,ll ql,ll qr){
+  if(qr<l || r<ql) return 0;
+  if(ql<=l && r<=qr) return f2[v];
+  int mid=(l+r)/2;
+  return (fw2(v*2,l,mid,ql,qr)+fw2(v*2+1,mid+1,r,ql,qr))%MOD;
+}
+ 
+void up2(int v,int l,int r,int pos,ll val){
+  if(l==r) f2[v]+=val,f2[v]%=MOD;
+  else{
+    int mid=(l+r)/2;
+    if(pos<=mid){
+      up2(v*2,l,mid,pos,val);
+    }
+    else up2(v*2+1,mid+1,r,pos,val);
+    f2[v]=(f2[v*2]+f2[v*2+1])%MOD;
+  }
+}
+ 
+int main(){
+  ios::sync_with_stdio(0); cin.tie(0);
+  int n,m;
+  string s;
+  cin >> n >> m >> s;   
+  p[0]=1;
+  for(int i=1;i<=n;i++){
+    p[i]=p[i-1]*P;
+    p[i]%=MOD;
+  }
+  for(int i=1;i<=n;i++){
+    h[i]=h[i-1]+s[i-1]*p[i];
+    h[i]%=MOD;
+    up1(1,1,n,i,1ll*s[i-1]*p[i]);
+    h1[i]=h1[i-1]+s[n-i]*p[i];
+    h1[i]%=MOD;
+    up2(1,1,n,i,1ll*s[n-i]*p[i]);
+    // cout<<i<<" "<<fw1(i)<<" "<<h[i]<<"\n";
+    // cout<<i<<" "<<fw2(i)<<" "<<h1[i]<<"\n";
+  }
+  for(int i=1;i<=m;i++){
+    int t;
+    cin >> t;
+    if(t==1){
+      int x;
+      char c;
+      cin >> x >> c;
+      up1(1,1,n,x,(((-s[x-1]*p[x])%MOD)+MOD%MOD));
+      up1(1,1,n,x,1ll*c*p[x]);
+      up2(1,1,n,n-x+1,(((-s[x-1]*p[n-x+1])%MOD)+MOD%MOD));
+      up2(1,1,n,n-x+1,1ll*c*p[n-x+1]);
+      s[x-1]=c;
+    }
+    else{
+      int x,y;
+      cin >> x >> y;
+      ll cnt1=fw1(1,1,n,x,y);
+      ll sum1=fw2(1,1,n,n-y+1,n-x+1);
+      // if(((h[y]-h[x-1]+MOD)*p[n-y])%MOD==((h1[n-x+1]-h1[n-y]+MOD)*p[x-1])%MOD)
+      if(((cnt1)*p[n-y])%MOD==((sum1)*p[x-1])%MOD){
+        cout << "YES\n";
+      }
+      else cout << "NO\n";
+    }
+  }
+}

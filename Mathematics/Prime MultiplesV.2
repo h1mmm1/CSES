@@ -1,0 +1,26 @@
+#include<bits/stdc++.h>
+using namespace std;
+using ll=long long int;
+ll a[30],ans=0,n,m;
+ 
+inline void rec(ll n1,ll cnt,ll sum,ll chk){
+	if(cnt==m+1){
+		if(n1==n) return;
+//		cout << n1 << ' ' << chk << "\n";
+		if(sum&1==1) ans+=n1;
+		else ans-=n1;
+		return;
+	}
+	rec(n1/a[cnt],cnt+1,sum+1,chk*a[cnt]);
+	rec(n1,cnt+1,sum,chk);
+}
+ 
+int main(){
+//	ios::sync_with_stdio(0); cin.tie(0);
+	cin >> n >> m;
+	for(int i=1;i<=m;i++){
+		cin >> a[i];
+	} 
+	rec(n,1,0,1);
+	cout << ans;
+}

@@ -1,0 +1,50 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int N=2e5+5;
+vector<int> g[N];
+int pa[N][18],lv[N];
+ 
+inline void rec(int x,int p){
+  pa[x][0]=p;
+  for(int i=1;i<18;i++){
+    pa[x][i]=pa[pa[x][i-1]][i-1];  
+  }
+  for(auto e:g[x]){
+    if(e==p) continue;
+    lv[e]=lv[x]+1;
+    rec(e,x);
+  }
+}
+ 
+inline int lca(int u,int v){
+  if(lv[u]<lv[v]) swap(u,v);
+  for(int i=17;i>=0;i--){
+    if(lv[u]-(1<<i)>=lv[v]) u=pa[u][i];
+  }
+  if(v==u) return v;
+  for(int i=17;i>=0;i--){
+    if(pa[u][i]!=pa[v][i]){
+      u=pa[u][i];
+      v=pa[v][i];
+    }
+  }
+  return pa[v][0];
+}
+ 
+int main(){
+  ios::sync_with_stdio(0); cin.tie(0);
+  int n,m;
+  cin >> n >> m;
+  for(int i=2;i<=n;i++){
+    int x;
+    cin >> x;
+    //g[i].push_back(x);
+    g[x].push_back(i);
+  }
+  rec(1,1);
+  while(m--){
+    int u,v;
+    cin >> u >> v;
+    cout << lca(u,v) << "\n";
+  }
+}

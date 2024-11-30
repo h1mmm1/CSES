@@ -1,0 +1,63 @@
+#include<bits/stdc++.h>
+using namespace std;
+using pii=pair<int,int>;
+const int N=1e5+5;
+int pa[N];
+set<pii> s;
+vector<pii> p;
+vector<int> cnt;
+ 
+inline int find(int v){
+  if(v==pa[v]) return v;
+  return pa[v]=find(pa[v]);
+}
+ 
+inline void U(int a,int b){
+  a=find(a);
+  b=find(b);
+  if(a!=b) pa[a]=b;
+}
+ 
+int main(){
+  ios::sync_with_stdio(0); cin.tie(0);
+  int n,m,k;
+  cin >> n >> m >> k;
+  int ans=n;
+  for(int i=1;i<=n;i++) pa[i]=i;
+  for(int i=1;i<=m;i++){
+    int u,v;
+    cin >> u >> v;
+    int x=min(u,v);
+    int y=max(u,v);
+    s.insert({x,y});
+  }
+  for(int i=1;i<=k;i++){
+    int u,v;
+    cin >> u >> v;
+    int x=min(u,v);
+    int y=max(u,v);
+    s.erase({x,y});
+    p.push_back({x,y});
+  }
+//  cout << "----\n";
+  for(auto e:s){
+    int x=e.first,y=e.second;
+//    cout << x << ' ' << y << "\n";
+    if(find(x)!=find(y)){
+	    U(x,y);
+	    ans--;    	
+	}
+  }
+  int t=p.size()-1;
+  for(int i=t;i>=0;i--){
+  	cnt.push_back(ans);
+//    cout << ans << "\n";	
+    int x=p[i].first,y=p[i].second;
+    if(find(x)!=find(y)){
+      ans--;
+      U(x,y);
+    }
+  }
+  t=cnt.size()-1;
+  for(int i=t;i>=0;i--) cout << cnt[i] << "\n";
+}
