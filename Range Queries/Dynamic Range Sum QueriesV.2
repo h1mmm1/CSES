@@ -1,0 +1,64 @@
+#include<bits/stdc++.h>
+using namespace std;
+using ll=long long int;
+const int N=2e5+5;
+ll st[N*4],a[N];
+ 
+inline void bu(int i,int l,int r){
+	if(l==r){
+		st[i]=a[l];
+	}
+	else{
+		int mid=(l+r)/2;
+		bu(i*2,l,mid);
+		bu(i*2+1,mid+1,r);
+		st[i]=st[i*2]+st[i*2+1];
+	}
+}
+ 
+inline void up(int i,int l,int r,int pos,int x){
+	if(l>r || l>pos || r<pos) return;
+	if(l==pos && r==pos){
+		st[i]=x;
+		return;
+	}
+	else{
+		int mid=(l+r)/2;
+		up(i*2,l,mid,pos,x);
+		up(i*2+1,mid+1,r,pos,x);
+		st[i]=st[i*2]+st[i*2+1];
+	}
+}
+ 
+inline ll qur(int i,int l,int r,int ql,int qr){
+	if(ql>r || qr<l) return 0;
+	if(ql<=l && r<=qr) return st[i];
+	else{
+		int mid=(l+r)/2;
+		return qur(i*2,l,mid,ql,qr)+qur(i*2+1,mid+1,r,ql,qr);
+	}
+}
+ 
+int main(){
+	ios::sync_with_stdio(0); cin.tie(0);
+	int n,m;
+	cin >> n >> m;
+	for(int i=1;i<=n;i++){
+		cin >> a[i];
+	}
+	bu(1,1,n);
+	while(m--){
+		int x;
+		cin >> x;
+		if(x==1){
+			int k,u;
+			cin >> k >> u;
+			up(1,1,n,k,u);
+		}
+		else{
+			int a,b;
+			cin >> a >> b;
+			cout << qur(1,1,n,a,b) << '\n';
+		}
+	}
+}

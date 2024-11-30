@@ -1,0 +1,47 @@
+#include<bits/stdc++.h>
+#include <ext/pb_ds/assoc_container.hpp> // Common file
+#include <ext/pb_ds/tree_policy.hpp>
+#include <functional> // for less
+using namespace std;
+using namespace __gnu_pbds;
+using ll=long long int;
+const int N=1e6+5;
+ll f[N],a[N];
+ 
+typedef tree<
+  int,
+  null_type,
+  less_equal<int>,
+  rb_tree_tag,
+  tree_order_statistics_node_update> ordered_multiset;
+ 
+int main(){
+  ios::sync_with_stdio(0); cin.tie(0);
+  ordered_multiset s;
+  int n,m;
+  cin >> n >> m;
+  for(int i=1;i<=n;i++){
+    cin >> a[i];
+    s.insert(a[i]);
+  }
+  while(m--){
+    char t;
+    cin >> t;
+    if(t=='!'){
+      int k,x;
+      cin >> k >> x;
+      auto v=s.order_of_key(a[k]);
+      auto u=s.find_by_order(v);
+      s.erase(u);
+      a[k]=x;
+      s.insert(x);
+    }
+    else{
+      int x,y;
+      cin >> x >> y;
+      auto v=s.order_of_key(y+1);
+      auto u=s.order_of_key(x);
+      cout << v-u << "\n";
+    }
+  }
+}

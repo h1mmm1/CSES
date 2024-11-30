@@ -1,0 +1,46 @@
+#include<bits/stdc++.h>
+using namespace std;
+using ll=long long int;
+const int N=2e5+5;
+ll f[N];
+ 
+inline ll fw(int i){
+  ll ans=0;
+  for(;i;i-=i&-i){
+    ans+=f[i];
+  }
+  return ans;
+}
+ 
+inline void ud(int i,int x){
+  for(;i<N;i+=i&-i){
+    f[i]+=x;
+  }
+}
+ 
+int main(){
+  ios::sync_with_stdio(0); cin.tie(0);
+  int n,m;
+  cin >> n >> m;
+  for(int i=1;i<=n;i++){
+    int x;
+    cin >> x;
+    ud(i,x);
+    ud(i+1,-x);
+  }
+  while(m--){
+    int t;
+    cin >> t;
+    if(t==1){
+      int a,b,u;
+      cin >> a >> b >> u;
+      ud(a,u);
+      ud(b+1,-u);
+    }
+    else{
+      int x;
+      cin >> x;
+      cout << fw(x) << "\n";
+    }
+  }
+}

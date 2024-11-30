@@ -1,0 +1,50 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int N=1005;
+char a[N][N];
+int f[N][N];
+ 
+inline int fw(int i,int j){
+  int ans=0;
+  for(;i;i-=i&-i){
+    for(int k=j;k;k-=k&-k){
+      ans+=f[i][k];
+    }
+  }
+  return ans;
+}
+ 
+inline void ud(int i,int j,int x){
+  for(;i<N;i+=i&-i){
+    for(int k=j;k<N;k+=k&-k){
+      f[i][k]+=x;
+    }
+  }
+}
+ 
+int main(){
+  ios::sync_with_stdio(0); cin.tie(0);
+  int n,m;
+  cin >> n >> m;
+  for(int i=1;i<=n;i++){
+    for(int j=1;j<=n;j++){
+      cin >> a[i][j];
+      if(a[i][j]=='*') ud(i,j,1);
+    }
+  }
+  while(m--){
+    int t;
+    cin >> t;
+    if(t==1){
+      int x,y;
+      cin >> x >> y;
+      if(a[x][y]=='*') ud(x,y,-1),a[x][y]='.';
+      else ud(x,y,1),a[x][y]='*';
+    }
+    else{
+      int x1,y1,x2,y2;
+      cin >> x1 >> y1 >> x2 >> y2;
+      cout << fw(x2,y2)-fw(x2,y1-1)-fw(x1-1,y2)+fw(x1-1,y1-1) << "\n";
+    }
+  }
+}
