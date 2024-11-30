@@ -1,0 +1,43 @@
+#include<bits/stdc++.h>
+using namespace std;
+vector<int> g[100050];
+int vis[100050];
+#define WAIT 2
+#define DONE 1
+#define NOT 0
+vector<int> s;
+void rec(int n){
+  vis[n]=WAIT;
+  for(auto e:g[n]){
+    if(vis[e]==NOT){
+      rec(e);
+    }
+    else if(vis[e]==WAIT){
+      return;
+    }
+  }
+  s.push_back(n);
+  vis[n]=DONE;
+}
+ 
+int main(){
+	ios::sync_with_stdio(0); cin.tie(0);
+	int n,m;
+  cin >> n >> m;
+  for(int i=1;i<=m;i++){
+    int a,b;
+    cin >> a >> b;
+    g[b].push_back(a);
+  }
+  for(int i=1;i<=n;i++){
+    if(vis[i]==NOT){
+      rec(i); 
+    } 
+  }
+  if(s.size()==n){
+    for(int e:s){
+      cout << e << ' ';
+    }
+  }
+  else cout << "IMPOSSIBLE";
+}

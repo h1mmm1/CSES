@@ -1,0 +1,18 @@
+#include<bits/stdc++.h>
+using namespace std;
+ 
+vector<int> p;
+int main(){
+	ios::sync_with_stdio(0); cin.tie(0);
+	int n;
+  cin >> n;
+  for(int i=1;i<=n;i++){
+    int a;
+    cin >> a;
+    auto v=lower_bound(p.begin(),p.end(),a)-p.begin();
+    if(v==p.size()) p.push_back(a);
+    else p[v]=a;
+  }
+  cout << p.size();
+ 
+}

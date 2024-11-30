@@ -1,0 +1,49 @@
+#include<bits/stdc++.h>
+using namespace std;
+using ppi=pair<int,pair<int,int>>;
+const int N=1e5+5;
+int pa[N];
+vector<ppi> p;
+ 
+inline int find(int v){
+	if(v==pa[v]) return v;
+	return pa[v]=find(pa[v]);
+}
+ 
+inline void U(int a,int b){
+	a=find(a);
+	b=find(b);
+	if(a!=b){
+		pa[a]=b;
+	}
+}
+ 
+int main(){
+	ios::sync_with_stdio(0); cin.tie(0);
+	int n,m;
+	cin >> n >> m;
+	for(int i=1;i<=m;i++){
+		int a,b,c;
+		cin >> a >> b >> c;
+		p.push_back({c,{a,b}});
+	}
+	for(int i=1;i<=n;i++) pa[i]=i;
+	sort(p.begin(),p.end());
+	long long int ans=0;
+	for(auto e:p){
+		int c=e.first;
+		int a=e.second.first;
+		int b=e.second.second;
+		if(find(a)!=find(b)){
+			U(a,b);
+			ans+=c;
+		}
+	}
+	for(int i=1;i<=n;i++){
+		if(find(1)!=find(i)){
+			cout << "IMPOSSIBLE";
+			return 0;
+		}
+	}
+	cout << ans;
+}

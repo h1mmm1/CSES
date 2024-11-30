@@ -1,0 +1,47 @@
+#include<bits/stdc++.h>
+using namespace std;
+using ll=long long int;
+using pii=pair<ll,int>;
+using ppi=pair<pii,int>;
+const int N=1e5+5;
+ll dis[N][2];
+bool vis[N][2];
+vector<pii> g[N];
+priority_queue<ppi,vector<ppi>,greater<ppi>> q;
+ 
+int main(){
+  ios::sync_with_stdio(0); cin.tie(0);
+  int n,m;
+  cin >> n  >> m;
+  for(int i=1;i<=m;i++){
+    int u,v,w;
+    cin >> u >> v >> w;
+    g[u].push_back({v,w});
+    //g[v].push_back({u,w});
+  }
+  for(int i=1;i<=n;i++) dis[i][0]=dis[i][1]=1e18;
+  dis[1][0]=0;
+  q.push({{dis[1][0],1},0});
+  while(!q.empty()){
+    int l=q.top().first.first;
+    int x=q.top().first.second;
+    int chk=q.top().second;
+    q.pop();
+    if(vis[x][chk]) continue;
+    vis[x][chk]=true;
+    for(auto e:g[x]){
+      int xx=e.first;
+      int ll=e.second;
+      if(chk==0 && dis[xx][1]>dis[x][chk]+ll/2){
+        dis[xx][1]=dis[x][chk]+ll/2;
+        q.push({{dis[xx][1],xx},1});
+      }
+      if(dis[xx][chk]>dis[x][chk]+ll){
+        dis[xx][chk]=dis[x][chk]+ll;
+        q.push({{dis[xx][chk],xx},chk});
+      }
+    }
+  }
+  cout << min(dis[n][0],dis[n][1]);
+}
+ 

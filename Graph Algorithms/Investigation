@@ -1,0 +1,52 @@
+#include<bits/stdc++.h>
+using namespace std;
+using ll=long long int;
+const int N=1e5+5,MOD=1e9+7;
+using pii=pair<ll,ll>;
+vector<pii> g[N];
+priority_queue<pii,vector<pii>,greater<pii>> q;
+bool vis[N];
+ll dp1[N],dis[N],dp2[N],dp3[N];
+ 
+int main(){
+  ios::sync_with_stdio(0); cin.tie(0);
+  int n,m;
+  cin >> n >> m;
+  for(int i=1;i<=m;i++){
+    int a,b,c;
+    cin >> a >> b >> c;
+    g[a].push_back({b,c});
+  }
+  for(int i=1;i<=n;i++) dis[i]=dp2[i]=1e18;
+//  memset(dis,0x3f,sizeof dis);
+//  memset(dp2,0x3f,sizeof dp2);
+  dp2[1]=dis[1]=0;
+  dp1[1]=1;
+  q.push({dis[1],1});
+  while(!q.empty()){
+    auto l=q.top().first;
+    auto x=q.top().second;
+    q.pop();
+    if(vis[x]) continue;
+    vis[x]=true;
+    for(auto e:g[x]){
+      auto xx=e.first;
+      auto ll=e.second;
+      
+      if(dis[xx]>dis[x]+ll && vis[xx]==false){
+        dis[xx]=dis[x]+ll;
+        q.push({dis[xx],xx});
+        dp1[xx]=dp1[x];
+        dp2[xx]=dp2[x]+1;
+        dp3[xx]=dp3[x]+1;
+      }
+      else if(dis[xx]==dis[x]+ll){
+        dp1[xx]+=dp1[x];
+        dp1[xx]%=MOD;
+        dp2[xx]=min(dp2[xx],dp2[x]+1);
+        dp3[xx]=max(dp3[xx],dp3[x]+1);
+      }
+    }
+  }
+  cout << dis[n] << ' ' << dp1[n] << ' ' << dp2[n] << ' ' << dp3[n];
+}

@@ -1,0 +1,41 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int N=1e5+5;
+int pa[N];
+vector<pair<int,int>> p;
+ 
+inline int find(int v){
+	if(pa[v]==v) return v;
+	return pa[v]=find(pa[v]);
+}
+ 
+inline void U(int a,int b){
+	a=find(a);
+	b=find(b);
+	if(a!=b){
+		pa[b]=a;
+	}
+}
+ 
+int main(){
+	ios::sync_with_stdio(0); cin.tie(0);
+	int n,m;
+	cin >> n >> m;
+	for(int i=1;i<=n;i++) pa[i]=i;
+	for(int i=1;i<=m;i++){
+		int u,v;
+		cin >> u >> v;
+		U(u,v);
+	}
+	int x=find(1);
+	for(int i=2;i<=n;i++){
+		if(x!=find(i)){
+			p.push_back({x,i});
+			U(x,i);
+		}
+	}
+	cout << p.size() << '\n';
+	for(auto e:p){
+		cout << e.first << ' ' << e.second << "\n";
+	}
+}

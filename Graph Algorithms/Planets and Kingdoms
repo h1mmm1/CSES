@@ -1,0 +1,58 @@
+//https://iq.opengenus.org/tarjans-algorithm/
+#include<bits/stdc++.h>
+using namespace std;
+const int N=1e5+5;
+vector<int> g[N];
+int dis[N],low[N],ans[N],cnt=0,sum=0;
+bool vis[N];
+stack<int> s;
+ 
+inline void rec(int x){
+//	cout << x << "\n";
+  cnt++;
+  dis[x]=low[x]=cnt;
+  s.push(x);
+  vis[x]=true;
+  for(auto e:g[x]){
+    if(dis[e]==-1){
+      rec(e);
+      low[x]=min(low[x],low[e]);
+    }
+    else if(vis[e]==true){
+      low[x]=min(low[x],dis[e]);
+    }
+  }
+  if(low[x]==dis[x]){
+    sum++;
+    while(s.top()!=x){
+      int to=s.top();
+      vis[to]=false;
+      ans[to]=sum;
+      s.pop();
+//      cout << to << ' ';
+    }
+//    cout << x << "---\n";
+    vis[x]=false;
+    ans[x]=sum;
+    s.pop();
+  }
+}
+ 
+int main(){
+  ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+  int n,m;
+  cin >> n >> m;
+  for(int i=1;i<=m;i++){
+    int a,b;
+    cin >> a >> b;
+    g[a].push_back(b);
+  }
+  memset(dis,-1,sizeof dis);
+  for(int i=1;i<=n;i++) if(dis[i]==-1) rec(i);
+  cout << sum << "\n";
+  for(int i=1;i<=n;i++) cout << ans[i] << " ";
+  cout << "\n";
+//  for(int i=1;i<=n;i++) cout << dis[i] << " ";
+//  cout << "\n";
+//  for(int i=1;i<=n;i++) cout << low[i] << " "; 
+}

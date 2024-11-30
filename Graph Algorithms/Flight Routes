@@ -1,0 +1,49 @@
+#include<bits/stdc++.h>
+using namespace std;
+using ll=long long int;
+using pii=pair<ll,ll>;
+const int N=1e5+5;
+priority_queue<pii,vector<pii>,greater<pii>> q;
+priority_queue<ll> dis[N];
+vector<pii> g[N];
+ 
+int main(){
+  ios::sync_with_stdio(0); cin.tie(0);
+  int n,m,k;
+  cin >> n >> m >> k;
+  for(int i=1;i<=m;i++){
+    int u,v,w;
+    cin >> u >> v >> w;
+    g[u].push_back({v,w});
+  }
+  dis[1].push(0);
+  q.push({0,1});
+  while(!q.empty()){
+    auto l=q.top().first;
+    auto x=q.top().second;
+    q.pop();
+    if(l>dis[x].top()) continue;
+    for(auto e:g[x]){
+      auto xx=e.first;
+      auto ll=e.second;
+      if(dis[xx].size()<k){
+        dis[xx].push(l+ll);
+        q.push({l+ll,xx});
+      }
+      else if(dis[xx].top()>l+ll){
+        dis[xx].pop();
+        dis[xx].push(l+ll);  
+        q.push({l+ll,xx});
+      }
+    }
+  }
+  vector<ll> ans;
+  while(!dis[n].empty()){
+    ans.push_back(dis[n].top());
+    dis[n].pop();
+  }
+  sort(ans.begin(),ans.end());
+  for(auto e:ans){
+    cout << e << ' ';
+  }
+}
