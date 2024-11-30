@@ -1,0 +1,31 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int N=2e5+5;
+int a[N];
+multiset<int> s;
+ 
+int main(){
+//  ios::sync_with_stdio(0); cin.tie(0);
+  int n,m;
+  cin >> n >> m;
+  for(int i=1;i<=n;i++){
+    int x;
+    cin >> x;
+    s.insert(x);
+  }
+  while(m--){
+    int x;
+    cin >> x;
+    auto v=s.upper_bound(x);
+    
+    if(v==s.begin()){
+    	cout << "-1\n";
+	}
+	
+	else{
+		v--;
+	    cout << *v << "\n";
+	    s.erase(v);		
+	}
+ 
+  }

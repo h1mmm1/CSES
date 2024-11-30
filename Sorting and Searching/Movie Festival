@@ -1,0 +1,22 @@
+#include<bits/stdc++.h>
+using namespace std;
+using pii=pair<int,int>;
+priority_queue<pii,vector<pii>,greater<pii>> q;
+ 
+int main(){
+	ios::sync_with_stdio(0); cin.tie(0);
+	int n,ans=0;
+  cin >> n;
+  for(int i=1;i<=n;i++){
+    int a,b;
+    cin >> a >> b;
+    q.push({b,a});
+  }
+  while(!q.empty()){
+    int x=q.top().first;
+    int y=q.top().second;
+    q.pop();
+    while(x>q.top().second && !q.empty()) q.pop();
+    ans++;
+  }
+  cout << ans;

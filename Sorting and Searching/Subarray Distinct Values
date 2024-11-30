@@ -1,0 +1,33 @@
+#include<bits/stdc++.h>
+using namespace std;
+using ll=long long int;
+int a[200005];
+unordered_map <int,int>mp;
+ 
+int main(){
+  ios::sync_with_stdio(0); cin.tie(0);
+ 
+    int n,k;
+    cin >> n >> k;
+    for(int i=1;i<=n;i++){
+      cin >> a[i];
+    }
+    int cnt=0,j=1;
+    ll ans=0;
+    for(int i=1;i<=n;i++){
+      while(cnt<=k && j<=n){
+        if(cnt==k && mp[a[j]]==0) break;
+        if(mp[a[j]]==0){
+          cnt++;
+        }
+        mp[a[j]]++;
+        j++;
+      }
+      mp[a[i]]--;
+      ans+=j-i+1-1;
+      //cout << ans << ' ' << j-1 << ' ' << i << "\n";
+      if(mp[a[i]]==0) cnt--;
+    }
+ 
+    cout << ans;
+}

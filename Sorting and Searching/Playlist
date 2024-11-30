@@ -1,0 +1,25 @@
+#include<bits/stdc++.h>
+using namespace std;
+map<int,int> mp;
+ 
+int main(){
+  ios::sync_with_stdio(0); cin.tie(0);
+  int n,mx=0,cnt=0;
+  cin >> n;
+  for(int i=1;i<=n;i++){
+    int x;
+    cin >> x;
+    if(mp.find(x)!=mp.end()){
+      cnt=max(cnt,mp[x]);     
+      mx=max(mx,i-cnt);
+      mp[x]=i;
+    }
+    else{
+      mp[x]=i;
+      mx=max(mx,i-cnt);
+    }
+    
+//    cout << i << ' '<< cnt << "\n";
+  }
+  cout << mx;
+}

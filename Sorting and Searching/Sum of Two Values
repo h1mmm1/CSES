@@ -1,0 +1,27 @@
+#include<bits/stdc++.h>
+using namespace std;
+using pii=pair<int,int>;
+const int N=2e5+5;
+int a[N];
+unordered_map<int,int> mp;
+ 
+int main(){
+  ios::sync_with_stdio(0); cin.tie(0);
+  int n,m;
+  cin >> n >> m;
+  for(int i=1;i<=n;i++){
+    cin >> a[i];
+    if(a[i]<m) mp[a[i]]=i;
+  }
+  bool ok=true;
+  for(int i=1;i<=n;i++){
+    if(mp.find(m-a[i])!=mp.end()){
+      if(mp[m-a[i]]!=i){
+        cout << i << ' ' << mp[m-a[i]];
+        ok=false;
+        break;
+      }
+    }
+  }
+  if(ok) cout << "IMPOSSIBLE";
+}

@@ -1,0 +1,24 @@
+#include<bits/stdc++.h>
+using namespace std;
+using ll=long long int;
+using pii=pair<ll,ll>;
+priority_queue<pii,vector<pii>,greater<pii>> q;
+ 
+int main(){
+	ios::sync_with_stdio(0); cin.tie(0);
+	ll a,sum=0,ans=0;
+  cin >> a;
+  while(a--){
+    int n,m;
+    cin >> n >> m;
+    q.push({n,m});
+  }
+  while(!q.empty()){
+    ll x=q.top().first;
+    ll y=q.top().second;
+    q.pop();
+    sum+=x;
+    ans+=(y-sum);
+  }
+  cout << ans;
+}

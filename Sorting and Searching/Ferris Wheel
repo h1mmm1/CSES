@@ -1,0 +1,30 @@
+#include<bits/stdc++.h>
+using namespace std;
+long long int a[200050]; 
+ 
+int main(){
+	ios::sync_with_stdio(0); cin.tie(0);
+	int n,m;
+	cin >> n >> m;
+  int l=n;
+	for(int i=1;i<=n;i++){
+		cin >> a[i];
+	}
+	long long int ans=0;
+	sort(a+1,a+1+n);
+	for(int i=1;i<=l;i++){
+		while(i<l && a[i]+a[l]>m){
+            l--;
+            ans++;
+        } 
+        if(i==l){
+            ans++;
+            break;
+        } 
+            else if(a[i]+a[l]<=m){
+            ans++;
+            l--;
+        }
+	}
+	cout << ans;
+}

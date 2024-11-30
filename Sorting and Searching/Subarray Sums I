@@ -1,0 +1,19 @@
+#include<bits/stdc++.h>
+using namespace std;
+long long int a[200050];
+ 
+int main(){
+  ios::sync_with_stdio(0); cin.tie(0);
+  long long int n,m;
+  cin >> n >> m;
+  for(int i=1;i<=n;i++){
+    cin >> a[i];
+    a[i]+=a[i-1];
+  }
+  int l=0,ans=0;
+  for(int i=1;i<=n;i++){
+    while(a[i]-a[l]>m) l++;
+    if(a[i]-a[l]==m) ans++;
+  }
+  cout << ans;
+}
