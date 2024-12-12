@@ -1,0 +1,36 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int N=2e5+5;
+int a[N];
+vector<int> g[N];
+unordered_set<int> s[N];
+ 
+inline void rec(int x,int p){
+  for(auto e:g[x]){
+    if(e==p) continue;
+    rec(e,x);
+    for(auto c:s[e]){
+      s[x].insert(c);
+    }
+  }
+}
+ 
+int main(){
+  ios::sync_with_stdio(0); cin. tie(0);
+  int n;
+  cin >> n;
+  for(int i=1;i<=n;i++){
+    cin >> a[i];
+    s[i].insert(a[i]);
+  }
+  for(int i=1;i<n;i++){
+    int u,v;
+    cin >> u >> v;
+    g[u].push_back(v);
+    g[v].push_back(u);
+  }
+  rec(1,1);
+  for(int i=1;i<=n;i++){
+  	cout << s[i].size() << " ";
+  }
+}
